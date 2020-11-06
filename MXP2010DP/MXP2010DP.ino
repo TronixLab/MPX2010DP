@@ -49,7 +49,7 @@
   MXP2010DP with 16-bit ADC module (ADS1115) test connection:
       MXP2010DP   |   ADS1115   |   Arduino
          GND           GND            GND
-         VDD         +SUPPLY          5V
+         VDD         +SUPPLY          3.3V
        +OUTPUT          A0            --
        -OUTPUT          A1            --
           --           SCL            SCL
@@ -63,7 +63,7 @@
 
 Adafruit_ADS1115 ads(0x48);   // ADC object at I2C address 0x48 for addr pin = GND
 int16_t adc0_1, adc0, adc1;   // variables to hold ADC readings
-float multiplier = 0.125F;    // use only 1x gain   +/- 4.096V = 0.125mV/step
+float multiplier = 0.0625F;   // use 2x gain +/- 2.048V = 0.0625mV/step
 
 float Vout = 0.00F;           // output voltage from pressure sensor
 float Voff = 0.00F;           // offset voltage (-1 to 1V) can be use for calibration *see datasheet
@@ -73,13 +73,11 @@ float Pc = 0.00F;             // calculated pressure value
 void setup() {
   ads.begin();
   Serial.begin(9600);
-  Serial.println("Getting single-ended reading from AIN0");
-  Serial.println("Getting single-ended reading from Arduino A1");
   Serial.println("Getting differential reading from AIN0 (P) - AIN1 (N)");
-  Serial.println("Use 1x gain   +/- 4.096V  1 bit = 0.125mV");
   Serial.println();
   Serial.println();
-  ads.setGain(GAIN_ONE);
+  delay(1000);
+  ads.setGain(GAIN_TWO);
 }
 
 void loop() {
